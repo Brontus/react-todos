@@ -14,7 +14,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Lista</h1>
+      <h1>Lista </h1>
 
       <form onSubmit={(e)=>e.preventDefault()}>
         <input
