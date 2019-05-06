@@ -1,16 +1,18 @@
-import React, {useState} from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react"
+import logo from "./logo.svg"
+import "./App.css"
+import Button from "./Button"
+import Checkbox from "./Checkbox"
 
 function App() {
-  let storeList=JSON.parse(localStorage.getItem("Min Lista"))
+  let storeList = JSON.parse(localStorage.getItem("Min Lista"))
 
   // if(storeList==null) {
   //   storeList=[]
   // }
 
   const [items, setItems] = useState(storeList)
-  const [addText, setAddText] = useState("");
+  const [addText, setAddText] = useState("")
 
   const saveList = () => {
     setTimeout(() => {
@@ -23,77 +25,81 @@ function App() {
     <div className="App">
       <h1>Nästan funktionell lista</h1>
 
-      <form onSubmit={(e)=>e.preventDefault()}>
+      <form onSubmit={e => e.preventDefault()}>
         <input
           value={addText}
           onChange={e => setAddText(e.target.value)}
           placeholder="Add item"
         />
 
-        <button onClick={() => {
-          setItems([
-            {
-              text: addText, 
-              done: false
-            }, ...items])
+        <Button
+          onClick={() => {
+            setItems([
+              {
+                text: addText,
+                done: false
+              },
+              ...items
+            ])
 
-          setAddText("")
-          saveList()
-        }}>Add</button>
+            setAddText("")
+            saveList()
+          }}
+          text="Add"
+        />
       </form>
-        
-      {items.length?
+
+      {items.length ? (
         items.map((currentItem, currentIndex) => {
           return (
             <div className="item">
               <div>
-                <input 
-                  type="checkbox" 
-                  onChange={(e) => {
-                    setItems(items.map((sak, index) => {
-                      if (currentIndex==index) {
-                        return {...sak, done: e.target.checked}
-                      } else {
-                        return sak
-                      }
-                    }))
+                <Checkbox
+                  checked={currentItem.done}
+                  onChange={value => {
+                    setItems(
+                      items.map((sak, index) => {
+                        if (currentIndex == index) {
+                          return { ...sak, done: value }
+                        } else {
+                          return sak
+                        }
+                      })
+                    )
 
                     saveList()
-                    
-                  }} 
-                  checked={currentItem.done}
+                  }}
                 />
 
                 <p>{currentItem.text}</p>
               </div>
 
+              <Button
+                onClick={() => {
+                  setItems(
+                    items.filter((item, i) => {
+                      if (i == currentIndex) {
+                        return false
+                      } else {
+                        return true
+                      }
+                    })
+                  )
 
-              <button onClick={() => {
-                setItems(items.filter((item, i)=>{
-                  if(i==currentIndex) {
-                    return false
-                  }else {
-                    return true
-                  }
-  
-                }))
-
-                saveList()
-             
-              }}>Remove Item</button>
+                  saveList()
+                }}
+                text="Remove Item"
+              />
             </div>
-          );
+          )
         })
-        :
+      ) : (
         <p>The list is empty!</p>
-      }
+      )}
 
-      
       {}
-
     </div>
-  );
+  )
 }
 
-
-export default App;
+export default App

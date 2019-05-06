@@ -1,0 +1,9 @@
+.Button button {
+  padding: 10px;
+  border: none;
+  background-color: orange;
+}
+
+.Button {
+  display: inline-block;
+}
